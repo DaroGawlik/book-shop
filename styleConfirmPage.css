@@ -1,0 +1,122 @@
+/* CONFIRM ORDER */
+/* .test {
+	font-size: 0;
+} */
+
+.orderContainerShadow {
+	position: absolute;
+	top: 0;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 1;
+}
+
+.orderContainer {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	height: 80rem;
+	width: 80rem;
+	background-image: linear-gradient(to left, #d7d2cc 0%, #304352 100%);
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.btnOrderContainerCancel {
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+	width: 8rem;
+	height: 2rem;
+	font-size: 1rem;
+	text-transform: capitalize;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+}
+
+.orderContainerForm {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-right: -50%;
+	transform: translate(-50%, -50%);
+	height: 70rem;
+	width: 40rem;
+}
+
+.mainDivtest {
+	position: relative;
+	height: 100%;
+}
+.nameCon,
+.surnameCon,
+.deliveryCon,
+.streetCon,
+.houseNumberCon,
+.flatNumberCon,
+.paymentTypeCon {
+	height: 5rem;
+	width: 40rem;
+	font-size: 3rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+	text-transform: capitalize;
+}
+
+.nameField,
+.surnameField,
+.deliveryField,
+.streetField,
+.houseNumberField,
+.flatNumberField {
+	position: absolute;
+	right: 0;
+	height: 3rem;
+	border: 1px solid black;
+	/* margin-top: 1rem; */
+}
+
+.errorConfirmNameCon,
+.errorConfirmSurnameCon,
+.errorConfirmDeliveryCon,
+.errorConfirmStreetCon,
+.errorConfirmHouseNumberCon,
+.errorConfirmFlatNumberCon {
+	right: 2rem;
+	font-size: 2rem;
+	color: red;
+}
+
+.giftsComForm {
+	height: 5rem;
+	width: 40rem;
+}
+
+.giftTitle {
+	font-size: 2rem;
+}
+
+.giftsContainer {
+	/* display: flex;
+	flex-direction: column; */
+	margin-top: 1rem;
+	font-size: 2rem;
+}
+
+.giftsContainer label {
+	margin-left: 1rem;
+	/* display: flex;
+	flex-direction: column; */
+}
+
+/* .btnCom {
+	height: 5rem;
+	width: 4rem;
+	border: 1px solid black;
+} */

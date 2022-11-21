@@ -1,0 +1,259 @@
+@import './styleConfirmPage.css'; /* Using a string */
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 62.5%;
+}
+
+body {
+	position: relative;
+}
+/* HEADER */
+
+header {
+	position: relative;
+	height: 100px;
+	width: 100%;
+	background-image: url('./img/backgroundimg.jpg');
+	background-position: center;
+	background-size: cover;
+	z-index: -10;
+}
+
+.headerShadow {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	font-size: 4rem;
+	font-weight: 300;
+	text-transform: capitalize;
+	color: white;
+	z-index: 10;
+}
+
+/* MAIN */
+
+main {
+	display: flex;
+	background-image: linear-gradient(to left, #d7d2cc 0%, #304352 100%);
+}
+
+/* LEFT */
+
+.mainDivLeft {
+	width: 80%;
+	height: 100%;
+	border-right: 1px solid black;
+}
+
+h4 {
+	text-align: center;
+	padding-top: 20px;
+	font-size: 4rem;
+	font-weight: 300;
+	text-transform: capitalize;
+	color: white;
+}
+
+.mainDivLeftContainer {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+.bookCard {
+	position: relative;
+	width: 200px;
+	height: 350px;
+	margin: 4rem 3rem 2rem 3rem;
+	border: 1px solid black;
+}
+
+.bookCardImg {
+	width: 160px;
+	height: 180px;
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	margin: 1rem auto;
+}
+
+h2,
+h3 {
+	font-size: 1.1rem;
+	padding-right: 1rem;
+}
+
+h2,
+h3,
+.bookPrice {
+	padding-left: 1.5rem;
+}
+
+.bookBtns {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.btnInfoBook,
+.btnInfoAdd {
+	width: 8rem;
+	height: 2rem;
+	font-size: 1rem;
+	text-transform: capitalize;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+}
+
+h2,
+h3,
+.bookPrice,
+.bookBtns {
+	height: 3rem;
+	margin-top: 1rem;
+}
+
+.moreInfoHide {
+	font-size: 0;
+}
+
+.moreInfo {
+	position: absolute;
+	height: 320px;
+	padding: 1rem;
+	font-size: 1.5rem;
+	background-color: white;
+	bottom: 40px;
+	z-index: 2;
+}
+
+.btnMoreInfoClose {
+	position: absolute;
+	right: 2rem;
+	bottom: 1rem;
+	width: 8rem;
+	height: 2rem;
+	font-size: 1rem;
+	text-transform: capitalize;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+}
+
+/* RIGHT */
+
+.mainDivRight {
+	width: 20%;
+	height: 100%;
+}
+
+.bagContainer {
+	width: 90%;
+	height: 500px;
+	margin: 4rem auto 0;
+	border: 1px solid black;
+	overflow-y: scroll;
+}
+
+/* LI ADD ITEM */
+
+.bagListLi {
+	position: relative;
+	display: flex;
+	width: 100%;
+	height: 15rem;
+	margin-top: 1rem;
+	border-bottom: 1px solid black;
+}
+.liImg {
+	width: 12rem;
+	height: 100%;
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+}
+
+.liInfo {
+	margin-left: 1rem;
+	font-size: 1.5rem;
+}
+.liInfoTitle {
+	width: 16rem;
+	font-weight: bold;
+}
+
+.liInfoAuthor,
+.liInfoTitle,
+.liInfoPrice {
+	margin-top: 1rem;
+}
+
+/* .liInfo {
+} */
+
+.btnLiBagRemove {
+	position: absolute;
+	right: 1rem;
+	bottom: 1rem;
+	width: 8rem;
+	height: 2rem;
+	font-size: 1rem;
+	text-transform: capitalize;
+	border-radius: 5px;
+	text-align: center;
+	cursor: pointer;
+}
+
+/*  */
+.bagTotal {
+	height: 100%;
+	font-size: 4rem;
+	margin-top: 2rem;
+	margin-left: 2rem;
+	text-transform: capitalize;
+}
+.bagSummary {
+	display: flex;
+	justify-content: space-around;
+	height: 10rem;
+	margin-top: 2rem;
+}
+
+.btnOrder,
+.btnClear {
+	height: 4rem;
+	width: 10rem;
+	text-transform: capitalize;
+	cursor: pointer;
+}
+
+/* FOOTER */
+
+footer {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 10rem;
+	border-top: 1px solid black;
+	background-image: linear-gradient(to left, #d7d2cc 0%, #304352 100%);
+}
+
+.footerSpan span {
+	font-size: 3rem;
+}
