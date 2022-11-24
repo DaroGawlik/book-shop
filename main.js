@@ -19,6 +19,14 @@ let val
 let el
 let blurAction
 
+let validName = false
+let validSurname = false
+let validDate = false
+let validStreet = false
+let validHouse = false
+let validFlate = false
+let validPayment = false
+
 // HEADER
 document.body.appendChild(header)
 
@@ -57,6 +65,7 @@ function catchBooks(data) {
 		const bookCard = document.createElement('div')
 		mainDivLeftContainer.appendChild(bookCard)
 		bookCard.classList.add('bookCard')
+		bookCard.setAttribute('draggable', true)
 
 		// IMAGE
 		const bookCardImg = document.createElement('div')
@@ -113,6 +122,7 @@ function catchBooks(data) {
 	catchInfoBtns()
 	catchBtnsMoreInfoClose()
 	catchAddbook()
+	catchDraggable()
 }
 
 // FUNCTIONS LEFT
@@ -176,6 +186,41 @@ const bagList = bagObject => {
 	liBtnBagRemove.innerHTML = `remove`
 
 	catchAllRemoveBtns(liBtnBagRemove)
+
+	btnOrder.disabled = false
+	btnClear.disabled = false
+}
+
+function catchDraggable() {
+	draggables = document.querySelectorAll('.bookCard')
+	draggables.forEach(draggable => {
+		draggable.addEventListener('dragstart', () => {
+			draggable.classList.add('dragging')
+		})
+		draggable.addEventListener('dragend', () => {
+			draggable.classList.remove('dragging')
+		})
+	})
+	bagContainer.addEventListener('dragover', e => {
+		e.preventDefault()
+	})
+
+	bagContainer.addEventListener('drop', e => {
+		e.preventDefault()
+		const test = document.querySelector('.dragging')
+		const testObject = {
+			bagImg: test.children[0].style.backgroundImage,
+			bagTitle: test.children[1].innerHTML,
+			bagAuthor: test.children[2].innerHTML,
+			bagPrice: test.children[3].innerHTML,
+		}
+		bagList(testObject)
+
+		const catchPriceInDrag = test.children[3].innerHTML
+		const cutPriceInDrag = catchPriceInDrag.substring(0, 2)
+		const toNumberPriceDrag = Number(cutPriceInDrag)
+		addTotalPrice(toNumberPriceDrag)
+	})
 }
 
 // RIGHT
@@ -183,6 +228,7 @@ const bagList = bagObject => {
 const mainDivRightConst = document.createElement('div')
 main.appendChild(mainDivRightConst)
 mainDivRightConst.classList.add('mainDivRight')
+// mainDivRightConst.style.visibility = 'hidden'
 
 const bagHeader = document.createElement('h4')
 mainDivRightConst.appendChild(bagHeader)
@@ -206,11 +252,13 @@ const btnOrder = document.createElement('button')
 bagSummary.appendChild(btnOrder)
 btnOrder.classList.add('btnOrder')
 btnOrder.innerHTML = `confirm order`
+btnOrder.disabled = true
 
 const btnClear = document.createElement('button')
 bagSummary.appendChild(btnClear)
 btnClear.classList.add('btnClear')
 btnClear.innerHTML = `clear all`
+btnClear.disabled = true
 
 const removeTargetBook = e => {
 	const catchPriceInBagToRemove = e.children[1].lastElementChild.innerHTML
@@ -218,7 +266,8 @@ const removeTargetBook = e => {
 	const toNumberPriceToRemove = Number(cutPriceToRemove)
 	$bagTotal -= toNumberPriceToRemove
 	bagTotal.innerHTML = `${$bagTotal} $`
-
+	btnOrder.disabled = true
+	btnClear.disabled = true
 	e.remove()
 }
 
@@ -226,12 +275,15 @@ const removeAllBooks = e => {
 	if ($bagListUl != undefined) $bagListUl.remove()
 	$bagTotal = 0
 	bagTotal.innerHTML = `${$bagTotal} $`
+	btnOrder.disabled = true
+	btnClear.disabled = true
 }
 
 const addTotalPrice = toNumberPrice => {
 	$bagTotal += toNumberPrice
 	bagTotal.innerHTML = `${$bagTotal} $`
-	console.log($bagTotal)
+	btnOrder.disabled = false
+	btnClear.disabled = false
 }
 
 // FOOTER
@@ -344,7 +396,6 @@ document.querySelectorAll('.blurAction').forEach(input =>
 		switch (e.target.id) {
 			case 'nameCon':
 				checkName()
-				focus()
 				break
 			case 'surnameCon':
 				checkSurname()
@@ -364,24 +415,23 @@ document.querySelectorAll('.blurAction').forEach(input =>
 		}
 	})
 )
-
-function checkValifFiled() {
-	checkName()
-	checkSurname()
-	checkDelivery()
-	checkStreet()
-	checkHouseNumber()
-	checkFlatNumber()
-}
-
 const checkName = () => {
 	let val = document.getElementById('nameCon').value
 	let el = document.querySelector('.errorConfirmNameCon')
 	if (val.length < 4 || val.match(/[^A-Za-z]/)) {
 		el.innerText = 'Minimum 4 strings'
+		validName = false
+		nameCon.style.borderColor = 'red'
+	} else if (val.value === '') {
+		validName = false
+		nameCon.style.borderColor = 'red'
 	} else {
 		el.innerText = ''
+		validName = true
+		nameCon.removeAttribute('style')
 	}
+
+	checkBtn()
 }
 
 const checkSurname = () => {
@@ -389,24 +439,34 @@ const checkSurname = () => {
 	let el = document.querySelector('.errorConfirmSurnameCon')
 	if (val.length < 5 || val.match(/[^A-Za-z]/)) {
 		el.innerText = 'Minimum 5 strings'
+		validSurname = false
+		surnameCon.style.borderColor = 'red'
 	} else {
 		el.innerText = ''
+		validSurname = true
+		surnameCon.removeAttribute('style')
 	}
+	checkBtn()
 }
 
-const deliveryField = document.querySelector('.deliveryField')
+const deliveryField = document.getElementById('deliveryCon')
 deliveryField.setAttribute('type', 'date')
 
 const checkDelivery = () => {
 	const today = new Date()
 	const tomorrow = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
-	dateUser = document.querySelector('.deliveryField').value
+	dateUser = document.getElementById('deliveryCon').value
 	const errorConfirmDeliveryCon = document.querySelector('.errorConfirmDeliveryCon')
 	if (dateUser <= tomorrow) {
 		errorConfirmDeliveryCon.innerText = 'Not earlier than next day'
+		validDate = false
+		deliveryField.style.borderColor = 'red'
 	} else {
 		errorConfirmDeliveryCon.innerText = ''
+		validDate = true
+		deliveryField.removeAttribute('style')
 	}
+	checkBtn()
 }
 
 const checkStreet = () => {
@@ -414,9 +474,14 @@ const checkStreet = () => {
 	let el = document.querySelector('.errorConfirmStreetCon')
 	if (val.length < 5 || val.match(/[^A-Za-z0-9. ]/)) {
 		el.innerText = 'Minimum 5 strings and numbers'
+		validStreet = false
+		streetCon.style.borderColor = 'red'
 	} else {
 		el.innerText = ''
+		validStreet = true
+		streetCon.removeAttribute('style')
 	}
+	checkBtn()
 }
 
 const checkHouseNumber = () => {
@@ -424,9 +489,14 @@ const checkHouseNumber = () => {
 	let el = document.querySelector('.errorConfirmHouseNumberCon')
 	if (val.match(/^[1-9][0-9]*$/)) {
 		el.innerText = ''
+		validHouse = true
+		houseNumberCon.removeAttribute('style')
 	} else {
 		el.innerText = 'Only postivie numbers'
+		validHouse = false
+		houseNumberCon.style.borderColor = 'red'
 	}
+	checkBtn()
 }
 
 const checkFlatNumber = () => {
@@ -434,9 +504,14 @@ const checkFlatNumber = () => {
 	let el = document.querySelector('.errorConfirmFlatNumberCon')
 	if (val.match(/^[1-9](\-?[1-9][0-9]*)*$/)) {
 		el.innerText = ''
+		validFlate = true
+		flatNumberCon.removeAttribute('style')
 	} else {
 		el.innerText = 'Only postivie numbers'
+		validFlate = false
+		flatNumberCon.style.borderColor = 'red'
 	}
+	checkBtn()
 }
 
 // RADIO DIV
@@ -453,7 +528,7 @@ paymentTypeCon.appendChild(radioLeftLabel)
 radioLeftLabel.setAttribute('id', 'cashRadio')
 radioLeftLabel.innerHTML = ' Cash '
 radioLeftLabel.style.marginLeft = '10px'
-const radioLeftInput = document.createElement('input')
+let radioLeftInput = document.createElement('input')
 paymentTypeCon.appendChild(radioLeftInput)
 radioLeftInput.setAttribute('type', 'radio')
 radioLeftInput.setAttribute('name', 'type')
@@ -466,13 +541,34 @@ paymentTypeCon.appendChild(radioRightLabel)
 radioRightLabel.setAttribute('id', 'cardRadio')
 radioRightLabel.innerHTML = ' Card '
 radioRightLabel.style.marginLeft = '20px'
-const radioRightInput = document.createElement('input')
+let radioRightInput = document.createElement('input')
 paymentTypeCon.appendChild(radioRightInput)
 radioRightInput.setAttribute('type', 'radio')
 radioRightInput.setAttribute('name', 'type')
 radioRightInput.setAttribute('value', 'card')
 radioRightInput.setAttribute('id', 'cardRadio')
 radioRightInput.style.marginLeft = '5px'
+
+let radioRightCheck = false
+let radioLeftCheck = false
+
+radioRightInput.addEventListener('click', () => {
+	radioRightCheck = true
+	radioLeftCheck = false
+	checkGift()
+})
+radioLeftInput.addEventListener('click', () => {
+	radioRightCheck = false
+	radioLeftCheck = true
+	checkGift()
+})
+
+function checkGift() {
+	if (radioRightCheck || radioLeftCheck) {
+		validPayment = true
+		checkBtn()
+	}
+}
 
 //GIFT DIV
 
@@ -539,18 +635,17 @@ radioGiftFourthLabel.innerHTML = 'Branded pen or pencil'
 document.querySelectorAll('input[type="checkbox"]').forEach(item => item.addEventListener('click', () => checkGifts()))
 
 const checkGifts = () => {
-	const test = [...document.querySelectorAll('input[type="checkbox"]')]
-	// test.forEach(item => console.log(item.checked))
-	const newTest = test.filter((item, index) => item.checked === true)
-	if (newTest.length > 1) {
-		test.forEach(item => {
+	const checkGiftsCheckBox = [...document.querySelectorAll('input[type="checkbox"]')]
+	const checkGiftsCheckBoxNew = checkGiftsCheckBox.filter((item, index) => item.checked === true)
+	if (checkGiftsCheckBoxNew.length > 1) {
+		checkGiftsCheckBox.forEach(item => {
 			if (item.checked === false) {
 				item.setAttribute('disabled', true)
 			}
 		})
 	}
-	if (newTest.length < 2) {
-		test.forEach(item => {
+	if (checkGiftsCheckBoxNew.length < 2) {
+		checkGiftsCheckBox.forEach(item => {
 			if (item.checked === false) {
 				item.removeAttribute('disabled')
 			}
@@ -558,10 +653,62 @@ const checkGifts = () => {
 	}
 }
 
-// btn
-const btnCom = document.createElement('div')
-orderContainerForm.appendChild(btnCom)
+const checkBtn = () => {
+	if (validName && validSurname && validDate && validStreet && validDate && validHouse && validFlate && validPayment) {
+		btnCom.disabled = false
+		btnCom.style.cursor = 'pointer'
+	}
+}
+
+const btnCom = document.createElement('button')
+orderContainer.appendChild(btnCom)
 btnCom.classList.add('btnCom')
+btnCom.innerHTML = 'Send'
+btnCom.disabled = true
+
+// CONFIRMATION
+
+btnCom.onclick = () => {
+	console.log('1')
+	const confirmationPanel = document.createElement('div')
+	document.body.appendChild(confirmationPanel)
+	confirmationPanel.classList.add('confirmationPanel')
+	console.log('2')
+
+	const confirmationPanelExit = document.createElement('button')
+	confirmationPanel.appendChild(confirmationPanelExit)
+	confirmationPanelExit.classList.add('confirmationPanelExit')
+	confirmationPanelExit.innerHTML = 'exit'
+
+	const confirmationAllinfo = document.createElement('p')
+	confirmationPanel.appendChild(confirmationAllinfo)
+	confirmationAllinfo.classList.add('confirmationAllinfo')
+	confirmationAllinfo.innerHTML = `
+	</br>
+	We will send a box to <span style='font-weight: 900'> ${document.getElementById('nameCon').value} ${
+		document.getElementById('surnameCon').value
+	} </span>
+	</br>
+	</br>
+	on adress: <span style='font-weight: 900'"> ${document.getElementById('streetCon').value} ${
+		document.getElementById('houseNumberCon').value
+	} ${document.getElementById('flatNumberCon').value} </span>
+	</br>
+	</br>
+	till <span style='font-weight: 900'> ${document.getElementById('deliveryCon').value} </span>
+	</br>
+	</br>
+	Thank you for your order, have a nice day!
+	`
+	exitFromConfirmationPanel(confirmationPanel, confirmationPanelExit)
+}
+
+const exitFromConfirmationPanel = (confirmationPanel, confirmationPanelExit) => {
+	document.querySelector('.confirmationPanelExit').onclick = () => {
+		document.body.removeChild(confirmationPanel)
+		confirmationPanel.removeChild(confirmationPanelExit)
+	}
+}
 
 // LISTENERS
 
