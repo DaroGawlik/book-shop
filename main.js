@@ -413,6 +413,7 @@ document.querySelectorAll('.blurAction').forEach(input =>
 				checkFlatNumber()
 				break
 		}
+		checkBtn()
 	})
 )
 const checkName = () => {
@@ -662,7 +663,6 @@ const checkBtn = () => {
 		btnCom.style.cursor = 'default'
 	}
 }
-
 
 const btnCom = document.createElement('button')
 orderContainer.appendChild(btnCom)
