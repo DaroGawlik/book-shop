@@ -657,8 +657,12 @@ const checkBtn = () => {
 	if (validName && validSurname && validDate && validStreet && validDate && validHouse && validFlate && validPayment) {
 		btnCom.disabled = false
 		btnCom.style.cursor = 'pointer'
+	} else {
+		btnCom.disabled = true
+		btnCom.style.cursor = 'default'
 	}
 }
+
 
 const btnCom = document.createElement('button')
 orderContainer.appendChild(btnCom)
